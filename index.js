@@ -33,6 +33,16 @@ app.get("/", (req, res) => {
   res.send("Api");
 });
 const PORT = process.env.PORT;
-app.listen(PORT || 2000, () => {
+const server = app.listen(PORT || 2000, () => {
   console.log(`Server Running ${PORT}`);
+});
+
+// Unhandled Rejection Handler
+process.on("unhandledRejection", (err) => {
+  console.error(err.name, err.message);
+  console.error(`UNHANDLED REJECTION ERROR: ${err.name} | ${err.message}`);
+  server.close(() => {
+    console.log("Shutting Down!....");
+    process.exit(1);
+  });
 });
